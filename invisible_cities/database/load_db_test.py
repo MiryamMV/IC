@@ -150,6 +150,8 @@ def test_frontend_mapping(db):
         pytest.skip("NEXT100 not implemented yet")
     if db.detector == "flex100":
         pytest.skip("Flex100 not implemented yet")
+    if db.detector == "dummy1cm":
+        pytest.skip("Dummy1cm not implemented yet")
 
     run_number = 6000
     fe_mapping, _ = DB.PMTLowFrequencyNoise(db.detector, run_number)
@@ -168,6 +170,8 @@ def test_pmt_noise_frequencies(db):
         pytest.skip("NEXT100 not implemented yet")
     if db.detector == "flex100":
         pytest.skip("Flex100 not implemented yet")
+    if db.detector == "dummy1cm":
+        pytest.skip("Dummy1cm not implemented yet")
 
     run_number = 5000
     _, frequencies = DB.PMTLowFrequencyNoise(db.detector, run_number)
