@@ -585,18 +585,22 @@ def MC_hits_from_files(files_in : List[str], rate: float) -> Generator:
     timestamp = create_timestamp(rate)
     for filename in files_in:
         try:
-            hits_df = load_mchits_df(filename)
+            hits_df_or = load_mchits_df(filename)
         except tb.exceptions.NoSuchNodeError:
             continue
+        level0 = hits_df_or.index.get_level_values(0)
+        energy_sel=hits_df_or.loc[hits_df_or.label=="ACTIVE"].groupby(level=0).energy.sum()>2
+        hits_df = hits_df_or.join(energy_sel.rename('energy_sel'), on=level0)
         for evt, hits in hits_df.groupby(level=0):
-            yield dict(event_number = evt,
-                       x            = hits.x     .values,
-                       y            = hits.y     .values,
-                       z            = hits.z     .values,
-                       energy       = hits.energy.values,
-                       time         = hits.time  .values,
-                       label        = hits.label .values,
-                       timestamp    = timestamp(evt))
+            if True in hits.energy_sel.values:
+                yield dict(event_number = evt,
+                           x            = hits.x     .values,
+                           y            = hits.y     .values,
+                           z            = hits.z     .values,
+                           energy       = hits.energy.values,
+                           time         = hits.time  .values,
+                           label        = hits.label .values,
+                           timestamp    = timestamp(evt))
 
 
 def dhits_from_files(paths: List[str]) -> Iterator[Dict[str,Union[HitCollection, pd.DataFrame, MCInfo, int, float]]]:
