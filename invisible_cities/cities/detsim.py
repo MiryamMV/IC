@@ -243,7 +243,7 @@ def detsim(*, files_in, file_out, event_range, print_mod, compression,
                          result = dict(events_in     = event_count_in.future,
                                        evtnum_list   = evtnum_collect.future))
 
-        copy_mc_info(files_in, h5out, result.evtnum_list,
-                     detector_db, run_number)
+        #copy_mc_info(files_in, h5out, result.evtnum_list,
+        #             detector_db, run_number)
 
         return result
