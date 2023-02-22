@@ -221,6 +221,12 @@ def detsim(*, files_in, file_out, event_range, print_mod, compression,
                                                        , int(buffer_params_["length"] / buffer_params_["pmt_width"])
                                                        , int(buffer_params_["length"] / buffer_params_["sipm_width"]))
 
+        mi_dicc_prueba = MC_hits_from_files(files_in, rate)
+        print('esto es el dicc')
+        print(mi_dicc_prueba)
+        print('estos deberían ser los eventos')
+        print(mi_dicc_prueba['event_number'])
+
         write_nohits_filter   = fl.sink(event_filter_writer(h5out, "active_hits"), args=("event_number", "passed_active"))
         result = fl.push(source= MC_hits_from_files(files_in, rate),
                          pipe  = fl.pipe( fl.slice(*event_range, close_all=True)

@@ -593,7 +593,7 @@ def MC_hits_from_files(files_in : List[str], rate: float) -> Generator:
         hits_df = hits_df_or.join(energy_sel.rename('energy_sel'), on=level0)
         for evt, hits in hits_df.groupby(level=0):
             if True in hits.energy_sel.values:
-                print(evt)
+                print(evt) #quitar esto
                 yield dict(event_number = evt,
                            x            = hits.x     .values,
                            y            = hits.y     .values,
