@@ -407,6 +407,7 @@ def length_of(iterable):
 
 def check_lengths(*iterables):
     lengths  = map(length_of, iterables)
+    print("esto es el print ",lengths)
     nonnones = filter(lambda x: x is not None, lengths)
     if np.any(np.diff(list(nonnones)) != 0):
         raise InvalidInputFileStructure("Input data tables have different sizes")
@@ -472,10 +473,18 @@ def wf_from_files(paths, wf_type):
                 sipm_wfs    = get_sipm_wfs    (h5in, wf_type)
                 (trg_type ,
                  trg_chann) = get_trigger_info(h5in)
+                trg_type = repeat(None)
+
             except tb.exceptions.NoSuchNodeError:
                 continue
 
+            print("pmts ",pmt_wfs.shape)
+            print("sipms ",sipm_wfs.shape)
+            print("event info ",event_info.shape)
+            print("trigger type ",trg_type)
+            print("trigger channel ",trg_chann)
             check_lengths(pmt_wfs, sipm_wfs, event_info, trg_type, trg_chann)
+            #check_lengths(trg_type, trg_chann)
 
             for pmt, sipm, evtinfo, trtype, trchann in zip(pmt_wfs, sipm_wfs, event_info, trg_type, trg_chann):
                 event_number, timestamp         = evtinfo.fetch_all_fields()
